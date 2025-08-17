@@ -20,8 +20,14 @@ public class GenAiController {
     }
 
     @PostMapping("/chat")
-    public ResponseEntity<String> getResponse(@RequestBody String prompt) {
-        String response = service.getResponse(prompt);
+    public ResponseEntity<String> getResponse(@RequestBody String message) {
+        String response = service.getResponse(message);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/chat-options")
+    public ResponseEntity<String> getResponseOptions(@RequestBody String message) {
+        String response = service.getResponseOptions(message);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
