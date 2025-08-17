@@ -15,7 +15,6 @@ public class AiConfiguration {
 
     //Implementation of ChatClient bean through OpenAiChatModel for this project
     @Bean("chatClient")
-    @Primary
     public ChatClient createChatClientBean(OpenAiChatModel openAiChatModel) {
         return ChatClient.create(openAiChatModel);
     }
@@ -26,7 +25,8 @@ public class AiConfiguration {
     }
 
     //Implementation of ChatClient bean for chat recall via Advisors
-    @Bean("chatClientWithMemory")
+    @Bean("chatClientMemory")
+    @Primary
     public ChatClient createChatClientWithMemory(ChatClient.Builder builder, @Qualifier("chatMemory") ChatMemory chatMemory) {
         return builder.defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build()).build();
     }
