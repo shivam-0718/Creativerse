@@ -11,7 +11,7 @@ public class ChatService implements IChatService {
 
     private final ChatClient chatClient;
 
-    public ChatService(@Qualifier("chatClient") ChatClient chatClient) {
+    public ChatService(@Qualifier("chatClientMemory") ChatClient chatClient) {
         this.chatClient = chatClient;
     }
 
@@ -23,10 +23,11 @@ public class ChatService implements IChatService {
                 .content();
     }
 
+    //Implementing this with OpenAi Models.
     @Override
     public String getResponseOptions(String message) {
         Prompt prompt = new Prompt(message, OpenAiChatOptions.builder()
-                .model("gpt-4-0")
+                .model("gpt-4o")
                 .temperature(0.4)
                 .build());
         ChatClient.CallResponseSpec chatResponse = chatClient.prompt(prompt).call();
