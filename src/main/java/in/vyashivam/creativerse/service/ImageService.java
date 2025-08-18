@@ -24,11 +24,10 @@ public class ImageService implements IImageService {
     public ImageResponse generateImageOptions(String message) {
         ImagePrompt imagePrompt = new ImagePrompt(message,
                 OpenAiImageOptions.builder()
-                .quality("hd")
                 .N(2)
+                .model("dall-e-2")
                 .height(1024)
                 .width(1024)
-                .style("natural")
                 .build()
         );
         return imageModel.call(imagePrompt);
