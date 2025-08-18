@@ -4,4 +4,5 @@ import org.springframework.ai.image.ImageResponse;
 
 public interface IImageService {
     ImageResponse generateImage(String message);
+    ImageResponse generateImageOptions(String message);
 }
