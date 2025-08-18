@@ -1,5 +1,7 @@
 package in.vyashivam.creativerse.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import in.vyashivam.creativerse.service.IChatService;
 import in.vyashivam.creativerse.service.IImageService;
 import org.springframework.ai.image.ImageResponse;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/ai")
@@ -43,9 +48,14 @@ public class GenAiController {
     }
 
     @PostMapping("/image-options")
-    public ResponseEntity<String> getImageOptions(@RequestBody String message) {
+    public ResponseEntity<String> getImageOptions(@RequestBody String message) throws JsonProcessingException {
         ImageResponse imageResponse = imageService.generateImageOptions(message);
-        String url = imageResponse.getResult().getOutput().getUrl();
-        return new ResponseEntity<>(url, HttpStatus.OK);
+
+        List<String> imageUrls = imageResponse.getResults().stream()
+                .map(result -> result.getOutput().getUrl())
+                .toList();
+
+        String urls = new ObjectMapper().writeValueAsString(imageUrls);
+        return new ResponseEntity<>(urls, HttpStatus.OK);
     }
 }
