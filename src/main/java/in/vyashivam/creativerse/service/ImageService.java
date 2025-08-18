@@ -3,6 +3,7 @@ package in.vyashivam.creativerse.service;
 import org.springframework.ai.image.ImagePrompt;
 import org.springframework.ai.image.ImageResponse;
 import org.springframework.ai.openai.OpenAiImageModel;
+import org.springframework.ai.openai.OpenAiImageOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,19 @@ public class ImageService implements IImageService {
 
     public ImageResponse generateImage(String message) {
         ImagePrompt imagePrompt = new ImagePrompt(message);
+        return imageModel.call(imagePrompt);
+    }
+
+    public ImageResponse generateImageOptions(String message) {
+        ImagePrompt imagePrompt = new ImagePrompt(message,
+                OpenAiImageOptions.builder()
+                .quality("hd")
+                .N(2)
+                .height(1024)
+                .width(1024)
+                .style("natural")
+                .build()
+        );
         return imageModel.call(imagePrompt);
     }
 }
